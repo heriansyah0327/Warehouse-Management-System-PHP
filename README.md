@@ -53,12 +53,6 @@ warehouse/
 
 1. Copy folder `warehouse` ke `htdocs` (XAMPP) atau `www` (Laragon).
 2. Buka phpMyAdmin, import file `config/database.sql`
-   (file ini sudah termasuk perintah `CREATE DATABASE gudang_db`).
-   > Kalau database `gudang_db` kamu **sudah pernah diimport sebelumnya** (versi lama), jangan
-   > import ulang dari nol supaya data staff/homies yang sudah ada tidak hilang. Cukup jalankan
-   > `ALTER TABLE` yang ada di catatan migrasi pada bagian bawah `config/database.sql` (nambah
-   > kolom `diinput_oleh` / `dikembalikan_oleh` di tabel `peminjaman`, dan kolom `alasan` di
-   > tabel `barang_masuk`).
 3. Cek `config/db.php`, sesuaikan `$DB_USER` / `$DB_PASS` kalau MySQL kamu pakai password.
 4. Jalankan Apache + MySQL, lalu buka `http://localhost/warehouse/index.php`.
 

@@ -4,19 +4,6 @@ Aplikasi web sederhana (PHP native + MySQL, tanpa framework) untuk mengelola sto
 (Senjata & Narko), data Homies (peminjam), dan peminjaman senjata, lengkap dengan laporan
 riwayat masuk / keluar / peminjaman.
 
-> Catatan: sesuai permintaan, password **tidak dienkripsi/di-hash** — disimpan & dibandingkan
-> sebagai plain text di kolom `password`. Keamanan akses halaman murni mengandalkan PHP session
-> (`require_login()` / `require_admin()`), bukan enkripsi password. Jangan pakai pola ini untuk
-> aplikasi production sungguhan.
-
-## Cuplikan Tampilan
-
-<!--
-Taruh screenshot kamu di folder `image/` lalu panggil di sini, contoh:
-![Dashboard](image/dashboard.png)
-![Pinjam Barang](image/peminjaman.png)
--->
-
 ## Struktur Folder
 
 ```

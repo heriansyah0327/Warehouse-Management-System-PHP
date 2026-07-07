@@ -4,19 +4,6 @@ Aplikasi web sederhana (PHP native + MySQL, tanpa framework) untuk mengelola sto
 (Senjata & Narko), data Homies (peminjam), dan peminjaman senjata, lengkap dengan laporan
 riwayat masuk / keluar / peminjaman.
 
-> Catatan: sesuai permintaan, password **tidak dienkripsi/di-hash** — disimpan & dibandingkan
-> sebagai plain text di kolom `password`. Keamanan akses halaman murni mengandalkan PHP session
-> (`require_login()` / `require_admin()`), bukan enkripsi password. Jangan pakai pola ini untuk
-> aplikasi production sungguhan.
-
-## Cuplikan Tampilan
-
-<!--
-Taruh screenshot kamu di folder `image/` lalu panggil di sini, contoh:
-![Dashboard](image/dashboard.png)
-![Pinjam Barang](image/peminjaman.png)
--->
-
 ## Struktur Folder
 
 ```
@@ -51,6 +38,10 @@ warehouse/
 │   ├── laporan_masuk.php          -> riwayat barang masuk + filter kategori/tanggal
 │   ├── laporan_keluar.php         -> riwayat barang keluar + filter kategori/tanggal
 │   └── laporan_peminjaman.php     -> riwayat peminjaman (event Pinjam & Dikembalikan) + filter
+├── penjualan/
+│   ├── data_penjualan.php         -> rekap penjualan
+│   ├── penjualan.php              -> form penjualan narko
+│   └── selesai.php                -> 
 ├── assets/
 │   ├── css/style.css              -> SATU file CSS untuk semua halaman
 │   └── js/script.js               -> interaksi sidebar, dropdown, modal, search-select, dsb
@@ -66,12 +57,6 @@ warehouse/
 
 1. Copy folder `warehouse` ke `htdocs` (XAMPP) atau `www` (Laragon).
 2. Buka phpMyAdmin, import file `config/database.sql`
-   (file ini sudah termasuk perintah `CREATE DATABASE gudang_db`).
-   > Kalau database `gudang_db` kamu **sudah pernah diimport sebelumnya** (versi lama), jangan
-   > import ulang dari nol supaya data staff/homies yang sudah ada tidak hilang. Cukup jalankan
-   > `ALTER TABLE` yang ada di catatan migrasi pada bagian bawah `config/database.sql` (nambah
-   > kolom `diinput_oleh` / `dikembalikan_oleh` di tabel `peminjaman`, dan kolom `alasan` di
-   > tabel `barang_masuk`).
 3. Cek `config/db.php`, sesuaikan `$DB_USER` / `$DB_PASS` kalau MySQL kamu pakai password.
 4. Jalankan Apache + MySQL, lalu buka `http://localhost/warehouse/index.php`.
 
@@ -132,6 +117,26 @@ aktif di XAMPP/Laragon versi mana pun.
     otomatis tercatat sebagai baris baru di **Barang Masuk** (alasan otomatis "Dikembalikan oleh
     [nama] ([CID])").
 
+- **Penjualan** (admin & staff) — khusus kategori **Narko**:
+  - Form pilih **Nama Homies** dan **Nama Narko** lewat search box (ketik nama/CID atau nama
+    narko, muncul opsi dari data Homies & Kategori Barang), lalu isi jumlah.
+  - Stok narko otomatis berkurang saat terjual, dan tercatat juga sebagai **Barang Keluar**
+    (alasan otomatis "Dijual ke [nama] ([CID])") supaya konsisten dengan histori stok.
+  - Tabel **Penjualan Proses** menampilkan nama homies, CID, nama narko, detail (tag
+    Bungkusan/Mentahan), jumlah, tanggal penjualan, dan tombol **"Konfirmasi Selesai"**.
+  - Klik tombol tersebut → baris hilang dari daftar proses dan status berubah jadi **Selesai**.
+    Beda dengan Pinjam Barang, stok **tidak dikembalikan** karena narko memang sudah terjual/habis.
+
+- **Data Penjualan** (admin & staff) — rekap penjualan narko per homies, dibagi per minggu:
+  - Navigasi pakai **pagination angka** di atas tabel. **Minggu 1 selalu minggu yang sedang
+    berjalan** (Senin–Minggu), makin besar nomornya berarti makin lama ke belakang.
+  - Tabel selalu menampilkan **semua homies** yang terdaftar (walau belum ada transaksi di minggu
+    itu), kolom: Nama Homies, CID, Proses Menjual, Total Penjualan, Target Penjualan.
+  - **Proses Menjual** = akumulasi jumlah transaksi berstatus Proses pada minggu itu. **Total
+    Penjualan** = akumulasi jumlah transaksi yang sudah **Selesai** pada minggu itu.
+  - Badge **Target Penjualan** otomatis **merah** kalau Total Penjualan < 500, dan **hijau** kalau
+    sudah tercapai (≥ 500).
+
 - **Laporan** (admin & staff):
   - **Laporan Barang Masuk**: riwayat semua barang masuk + kolom Alasan, filter kategori
     (Senjata/Narko) & rentang tanggal, plus total jumlah masuk.
@@ -164,3 +169,9 @@ aktif di XAMPP/Laragon versi mana pun.
 
 ### 📄 Tampilan 5
 ![Tampilan 5](image/management.png)
+
+### 📄 Tampilan 6
+![Tampilan 6](image/penjualan.png)
+
+### 📄 Tampilan 7
+![Tampilan 7](image/data_penjualan.png)

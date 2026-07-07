@@ -1,9 +1,10 @@
 <?php
 // Variabel yang diharapkan sudah di-set oleh halaman pemanggil:
 // $base          -> prefix path relatif ('' untuk root, '../' untuk sub-folder)
-// $active_menu   -> 'dashboard' | 'barang' | 'pinjam' | 'homies' | 'staff' | 'laporan'
+// $active_menu   -> 'dashboard' | 'barang' | 'pinjam' | 'penjualan' | 'homies' | 'staff' | 'laporan'
 // $active_sub    -> nama sub-item aktif, opsional:
 //                   'kategori' | 'masuk' | 'keluar' (menu barang)
+//                   'jual' | 'data_jual' (menu penjualan)
 //                   'lap_masuk' | 'lap_keluar' | 'lap_pinjam' (menu laporan)
 $base = $base ?? '';
 $active_menu = $active_menu ?? '';
@@ -47,6 +48,17 @@ $initial = strtoupper(substr($u['full_name'] ?? 'U', 0, 1));
 
             <li class="nav-item <?= $active_menu === 'pinjam' ? 'active' : '' ?>">
                 <a href="<?= $base ?>peminjaman/peminjaman.php"><span class="icon">&#128196;</span> Pinjam Barang</a>
+            </li>
+
+            <li>
+                <div class="nav-parent <?= $active_menu === 'penjualan' ? 'active open' : '' ?>">
+                    <span><span class="icon">&#128176;</span> Management Penjualan</span>
+                    <span class="chevron">&#9660;</span>
+                </div>
+                <ul class="nav-sub <?= $active_menu === 'penjualan' ? 'open' : '' ?>">
+                    <li><a class="<?= $active_sub === 'jual' ? 'active' : '' ?>" href="<?= $base ?>penjualan/penjualan.php">Penjualan</a></li>
+                    <li><a class="<?= $active_sub === 'data_jual' ? 'active' : '' ?>" href="<?= $base ?>penjualan/data_penjualan.php">Data Penjualan</a></li>
+                </ul>
             </li>
 
             <li class="nav-item <?= $active_menu === 'homies' ? 'active' : '' ?>">

@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_jual'])) {
             $errors[] = 'Homies tidak ditemukan. Pastikan dipilih dari daftar pencarian.';
         }
 
-        $cn = mysqli_prepare($conn, "SELECT id, nama_barang, tag_narko, stok FROM kategori_barang WHERE id = ? AND jenis = 'Narko' LIMIT 1");
+        $cn = mysqli_prepare($conn, "SELECT id, nama_barang, tag_narko, stok FROM kategori_barang WHERE id = ? AND jenis = 'Narko' AND tag_narko = 'Bungkusan' LIMIT 1");
         mysqli_stmt_bind_param($cn, 'i', $id_barang);
         mysqli_stmt_execute($cn);
         $narko = mysqli_fetch_assoc(mysqli_stmt_get_result($cn));
@@ -82,7 +82,7 @@ $res = mysqli_query($conn, 'SELECT id, nama, cid FROM homies ORDER BY nama ASC')
 while ($row = mysqli_fetch_assoc($res)) { $homiesList[] = $row; }
 
 $narkoList = [];
-$res = mysqli_query($conn, "SELECT id, nama_barang, tag_narko, stok FROM kategori_barang WHERE jenis = 'Narko' ORDER BY nama_barang ASC");
+$res = mysqli_query($conn, "SELECT id, nama_barang, tag_narko, stok FROM kategori_barang WHERE jenis = 'Narko' AND tag_narko = 'Bungkusan' ORDER BY nama_barang ASC");
 while ($row = mysqli_fetch_assoc($res)) { $narkoList[] = $row; }
 
 // ---------------------------------------------------

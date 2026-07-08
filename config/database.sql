@@ -144,6 +144,13 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `full_name`, `role`, `created_at`) VALUES
+(1, 'admin', 'admin123', 'Admin Gudang', 'admin', '2026-07-04 05:37:46'),
+(4, 'staff', 'staff123', 'Staff Gudang', 'staff', '2026-07-04 14:53:32');
 
 --
 -- Indexes for dumped tables

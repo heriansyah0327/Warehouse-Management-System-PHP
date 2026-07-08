@@ -9,7 +9,7 @@ require_once __DIR__ . '/../config/db.php';
 // -----------------------------------------------------
 // 1. Isi URL webhook Discord kamu di sini
 // -----------------------------------------------------
-$DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1523253436697542766/2KsXYcUGV7EiNNCgTFOedZKlJe_tK55f-fkNR6vDm0ll7vWOYwJDZnnh4EeHUUNkykDf';
+$DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/.../....';
 
 // -----------------------------------------------------
 // 2. Ambil data peminjaman aktif (sama seperti peminjaman.php)

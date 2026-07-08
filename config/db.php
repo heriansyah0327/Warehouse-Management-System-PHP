@@ -6,7 +6,7 @@
 $DB_HOST = 'localhost';
 $DB_USER = 'root';
 $DB_PASS = '';
-$DB_NAME = 'gudang';
+$DB_NAME = 'heriansyah_gudang';
 
 $conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 

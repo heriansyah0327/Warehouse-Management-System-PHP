@@ -93,41 +93,6 @@ foreach ($homiesAll as $h) {
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="panel" style="margin-bottom:20px;">
-    <div class="panel-header">
-        <div>
-            <p class="panel-desc" style="margin:0;">Data Penjualan, Page 1 itu minggu berjalan.</p>
-        </div>
-    </div>
-
-    <?php
-    $totalMinggu = count($mingguList);
-    $windowSize = 5;
-    $winStart = max(1, $mingguParam - 2);
-    $winEnd = min($totalMinggu, $winStart + $windowSize - 1);
-    $winStart = max(1, $winEnd - $windowSize + 1);
-    ?>
-    <div class="pagination">
-        <?php if ($mingguParam > 1): ?>
-            <a href="?minggu=<?= $mingguParam - 1 ?>">&laquo;</a>
-        <?php endif; ?>
-
-        <?php for ($n = $winStart; $n <= $winEnd; $n++): ?>
-            <?php $w = $mingguList[$n]; ?>
-            <a href="?minggu=<?= $n ?>"
-               class="<?= $n === $mingguParam ? 'active' : '' ?>"
-               title="<?= e(date('d-m-Y', strtotime($w['start']))) ?> s/d <?= e(date('d-m-Y', strtotime($w['end']))) ?><?= $n === 1 ? ' (Berjalan)' : '' ?>">
-                <?= $n ?>
-            </a>
-        <?php endfor; ?>
-
-        <?php if ($mingguParam < $totalMinggu): ?>
-            <a href="?minggu=<?= $mingguParam + 1 ?>">&raquo;</a>
-        <?php endif; ?>
-    </div>
-</div>
-
-
 <div class="panel">
     <div class="panel-header">
         <div>
@@ -138,9 +103,51 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 
-    <table class="data-table">
+    <?php
+    $totalMinggu = count($mingguList);
+    $windowSize = 5;
+    $winStart = max(1, $mingguParam - 2);
+    $winEnd = min($totalMinggu, $winStart + $windowSize - 1);
+    $winStart = max(1, $winEnd - $windowSize + 1);
+    $adaPrev = $mingguParam > 1;
+    $adaNext = $mingguParam < $totalMinggu;
+    ?>
+    <div class="pagination-toolbar">
+        <span></span>
+        <div class="pagination">
+            <?php if ($adaPrev): ?>
+                <a href="?minggu=<?= $mingguParam - 1 ?>">&laquo;</a>
+            <?php else: ?>
+                <span class="pagination-spacer">&laquo;</span>
+            <?php endif; ?>
+
+            <?php for ($n = $winStart; $n <= $winEnd; $n++): ?>
+                <?php $w = $mingguList[$n]; ?>
+                <a href="?minggu=<?= $n ?>"
+                   class="<?= $n === $mingguParam ? 'active' : '' ?>"
+                   title="<?= e(date('d-m-Y', strtotime($w['start']))) ?> s/d <?= e(date('d-m-Y', strtotime($w['end']))) ?><?= $n === 1 ? ' (Berjalan)' : '' ?>">
+                    <?= $n ?>
+                </a>
+            <?php endfor; ?>
+
+            <?php if ($adaNext): ?>
+                <a href="?minggu=<?= $mingguParam + 1 ?>">&raquo;</a>
+            <?php else: ?>
+                <span class="pagination-spacer">&raquo;</span>
+            <?php endif; ?>
+        </div>
+
+        <select id="filterStatus" class="select-sort">
+            <option value="semua">Semua</option>
+            <option value="tercapai">Tercapai</option>
+            <option value="belum">Belum Tercapai</option>
+        </select>
+    </div>
+
+    <table class="data-table" id="dataPenjualanTable">
         <thead>
             <tr>
+                <th>No</th>
                 <th>Nama Homies</th>
                 <th>CID</th>
                 <th>Proses Menjual</th>
@@ -150,10 +157,11 @@ include __DIR__ . '/../includes/header.php';
         </thead>
         <tbody>
             <?php if (empty($rows)): ?>
-                <tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Belum ada homies terdaftar.</td></tr>
+                <tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Belum ada homies terdaftar.</td></tr>
             <?php else: ?>
-                <?php foreach ($rows as $r): ?>
-                <tr>
+                <?php foreach ($rows as $i => $r): ?>
+                <tr data-status="<?= $r['tercapai'] ? 'tercapai' : 'belum' ?>">
+                    <td><?= $i + 1 ?></td>
                     <td><?= e($r['nama']) ?></td>
                     <td><?= e($r['cid']) ?></td>
                     <td><?= (int)$r['proses'] ?></td>
@@ -168,6 +176,31 @@ include __DIR__ . '/../includes/header.php';
             <?php endif; ?>
         </tbody>
     </table>
+
+    <div class="table-footer">
+        <span id="dataPenjualanCount">Menampilkan <?= count($rows) ?> Homies</span>
+    </div>
 </div>
+
+<script>
+(function () {
+    var statusSelect = document.getElementById('filterStatus');
+    var countLabel = document.getElementById('dataPenjualanCount');
+    var rows = document.querySelectorAll('#dataPenjualanTable tbody tr[data-status]');
+
+    function applyFilters() {
+        var status = statusSelect.value;
+        var visible = 0;
+        rows.forEach(function (row) {
+            var show = status === 'semua' || row.getAttribute('data-status') === status;
+            row.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+        if (countLabel) countLabel.textContent = 'Menampilkan ' + visible + ' Homies';
+    }
+
+    if (statusSelect) statusSelect.addEventListener('change', applyFilters);
+})();
+</script>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

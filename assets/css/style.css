@@ -724,6 +724,23 @@ table.data-table .aksi-cell {
     gap: 6px;
 }
 
+.pagination-toolbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.pagination-toolbar .select-sort {
+    justify-self: end;
+}
+
+.pagination-spacer {
+    visibility: hidden;
+    pointer-events: none;
+}
+
 .pagination a, .pagination span {
     width: 30px;
     height: 30px;

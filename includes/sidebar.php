@@ -80,6 +80,7 @@ $initial = strtoupper(substr($u['full_name'] ?? 'U', 0, 1));
                     <li><a class="<?= $active_sub === 'lap_masuk' ? 'active' : '' ?>" href="<?= $base ?>laporan/laporan_masuk.php">Laporan Barang Masuk</a></li>
                     <li><a class="<?= $active_sub === 'lap_keluar' ? 'active' : '' ?>" href="<?= $base ?>laporan/laporan_keluar.php">Laporan Barang Keluar</a></li>
                     <li><a class="<?= $active_sub === 'lap_pinjam' ? 'active' : '' ?>" href="<?= $base ?>laporan/laporan_peminjaman.php">Laporan Peminjaman</a></li>
+                    <li><a class="<?= $active_sub === 'lap_penjualan' ? 'active' : '' ?>" href="<?= $base ?>laporan/laporan_penjualan.php">Laporan Penjualan</a></li>
                 </ul>
             </li>
         </ul>
